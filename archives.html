@@ -1,0 +1,31 @@
+<div id="auth-banner" style="display:none; background:#1c4a2e; border-left:4px solid #7ed99b; padding:16px 24px; font-family:'Share Tech Mono', monospace; color:#7ed99b; margin-bottom:24px;">
+  [SYSTEM] SESSION SECURELY AUTHENTICATED // WELCOME BACK, OPERATIVE.
+</div>
+
+<div id="archive-content" style="display:none;">
+  </div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    // Check if user has passed the code entry system
+    if (localStorage.getItem('wta_archive_authenticated') !== 'true') {
+      // Boot them back to the portal index if trying to sneak in directly
+      window.location.href = 'index.html';
+      return;
+    }
+
+    // Authenticated user path
+    const banner = document.getElementById('auth-banner');
+    const content = document.getElementById('archive-content');
+
+    banner.style.display = 'block';
+    content.style.display = 'block';
+
+    // Make the temporary login notice disappear cleanly after 3 seconds
+    setTimeout(() => {
+      banner.style.opacity = '0';
+      banner.style.transition = 'opacity 0.5s ease';
+      setTimeout(() => banner.style.display = 'none', 500);
+    }, 3000);
+  });
+</script>

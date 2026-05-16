@@ -1115,7 +1115,37 @@
     0%,98%,100% { opacity: 1; }
     99% { opacity: 0.85; clip-path: inset(30% 0 50% 0); }
   }
+  
+  /* ── GREEN DECRYPTION TERMINAL OVERLAY ── */
+  .sys-alert-box.decryption-theme {
+    border-color: #2d7a4a;
+    box-shadow: 0 0 40px rgba(45, 122, 74, 0.25), 0 0 80px rgba(45, 122, 74, 0.08);
+  }
 
+  .sys-alert-titlebar.decryption-theme {
+    background: #1c4a2e;
+  }
+
+  .msg.success { color: #7ed99b; }
+  .msg.processing { color: var(--gold); }
+
+  /* Progress Bar Styling */
+  .progress-container {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(45, 122, 74, 0.4);
+    height: 12px;
+    margin-top: 16px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .progress-bar {
+    width: 0%;
+    height: 100%;
+    background: #2d7a4a;
+    transition: width 0.1s linear;
+  }
 </style>
 </head>
 <body>
@@ -1162,7 +1192,7 @@
 <section id="section-about" class="section active">
   <div class="section-hero">
     <div class="hero-eyebrow">Est. City Charter Year 1 &nbsp;·&nbsp; Grimoria</div>
-    <h1 class="hero-title">Order, <em>intelligence</em>,<br>and the public trust.</h1>
+    <h1 class="hero-title">Order, <em>intelligence</em>,<br>and public trust.</h1>
     <div class="hero-rule"></div>
     <p class="hero-lead">The White Tiger serves as Grimoria's foremost institution for civil order, magic law enforcement, and intelligence coordination — operating across all ring classifications to ensure the safety of every citizen within the city's walls.</p>
   </div>
@@ -1607,15 +1637,21 @@
 
 
 <script>
-  // ── LIVE DATE ──
+  // 1. ── TIMESTAMP HELPER (Moved to the absolute top so everything else can use it) ──
+  function getTS() {
+    const d = new Date();
+    return `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}:${String(d.getSeconds()).padStart(2,'0')}`;
+  }
+
+  // 2. ── LIVE DATE (Updated to .innerHTML to support the typography spaces) ──
   (function() {
     const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
     const d = new Date();
-    document.getElementById('live-date').textContent =
-      `${d.getDate()} ${months[d.getMonth()]} 1628 &nbsp;·&nbsp; ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+    document.getElementById('live-date').innerHTML =
+      `${d.getDate()} ${months[d.getMonth()]} 1628 &nbsp;·&nbsp; ${getTS().substring(0, 5)}`;
   })();
 
-  // ── TAB NAV ──
+  // 3. ── TAB NAV SYSTEM ──
   function showSection(id) {
     document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
     document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
@@ -1623,12 +1659,11 @@
     document.getElementById('nav-' + id).classList.add('active');
   }
 
-  // ── PASSKEY LOGIC ──
-  const CORRECT_CODE = 'WHITEFANG';   // ← THE ARG CODE — change to your puzzle answer
+  // 4. ── PASSKEY & ALERTS CONFIGURATION ──
+  const CORRECT_CODE = 'WHITEFANG';   
   let attempts = 0;
   const MAX_BEFORE_ALERT = 3;
 
-  // Staged alert log lines per attempt cluster
   const alertStages = [
     [
       { ts: getTS(), cls: 'warn', msg: 'Unauthorised access attempt detected — Node WTA-SECURE-NODE-01' },
@@ -1648,11 +1683,6 @@
     ]
   ];
 
-  function getTS() {
-    const d = new Date();
-    return `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}:${String(d.getSeconds()).padStart(2,'0')}`;
-  }
-
   function checkPasskey() {
     const input = document.getElementById('passkey-input');
     const val = input.value.trim().toUpperCase();
@@ -1662,18 +1692,16 @@
     if (!val) return;
 
     if (val === CORRECT_CODE) {
-      // SUCCESS
       input.style.borderColor = '#2d7a4a';
       feedback.style.color = '#2d7a4a';
-      feedback.textContent = '✓ Clearance verified. Unlocking archive...';
+      feedback.textContent = '✓ Clearance verified. Initiating bypass...';
+      
       setTimeout(() => {
-        document.getElementById('passkey-panel').style.display = 'none';
-        document.getElementById('access-granted').style.display = 'block';
-      }, 1200);
+        runDecryptionSequence();
+      }, 800);
       return;
     }
 
-    // FAIL
     attempts++;
     input.value = '';
     input.classList.add('shake');
@@ -1688,7 +1716,64 @@
       feedback.textContent = `ACCESS DENIED — Code not recognised.`;
     }
 
-    counter.textContent = `Attempt ${attempts} &nbsp;·&nbsp; ${remaining} attempt${remaining!==1?'s':''} before security escalation.`;
+    counter.innerHTML = `Attempt ${attempts} &nbsp;·&nbsp; ${remaining} attempt${remaining!==1?'s':''} before security escalation.`;
+  }
+
+  // 5. ── GREEN TERMINAL DECRYPTION & REDIRECT FLOW ──
+  function runDecryptionSequence() {
+    const overlay = document.getElementById('sys-alert');
+    const box = overlay.querySelector('.sys-alert-box');
+    const titlebar = overlay.querySelector('.sys-alert-titlebar');
+    const body = document.getElementById('alert-log-body');
+    const footer = overlay.querySelector('.sys-alert-footer');
+
+    box.classList.add('decryption-theme');
+    titlebar.classList.add('decryption-theme');
+    titlebar.querySelector('span').textContent = '⚠ WTA — Core Decryption Sequence';
+    document.getElementById('alert-timestamp').textContent = getTS();
+    footer.style.display = 'none'; 
+
+    body.innerHTML = '';
+    overlay.classList.add('visible');
+
+    const steps = [
+      { text: 'Handshake accepted. Handing off token WTA-SECURE-NODE-01...', class: 'success' },
+      { text: 'Injecting decryption package "WHITEFANG"...', class: 'processing' },
+      { text: 'Bypassing Core Data structural firewalls...', class: 'processing' },
+      { text: 'Extracting classified profile structures: LINCOLN, HINA, ALAN...', class: 'processing' },
+      { text: 'Authorizing local secure instance state...', class: 'success' },
+      { text: 'REDIRECTING INCOMING DATA STREAM TO SECURE TERMINAL...', class: 'success' }
+    ];
+
+    const progContainer = document.createElement('div');
+    progContainer.className = 'progress-container';
+    const progBar = document.createElement('div');
+    progBar.className = 'progress-bar';
+    progContainer.appendChild(progBar);
+
+    steps.forEach((step, i) => {
+      setTimeout(() => {
+        const div = document.createElement('div');
+        div.className = 'log-line';
+        div.innerHTML = `<span class="ts" style="color:#2d7a4a;">[${getTS()}]</span><span class="msg ${step.class}">${step.text}</span>`;
+        body.appendChild(div);
+      }, i * 600);
+    });
+
+    setTimeout(() => {
+      body.appendChild(progContainer);
+      let progress = 0;
+      const interval = setInterval(() => {
+        progress += 2;
+        progBar.style.width = progress + '%';
+        if (progress >= 100) {
+          clearInterval(interval);
+          localStorage.setItem('wta_archive_authenticated', 'true');
+          // Update this URL string to match your Live Server link when ready!
+          window.location.href = 'https://bakon308.github.io/Character-Profiles/'; 
+        }
+      }, 50); 
+    }, 1200);
   }
 
   function triggerAlert(stageIndex) {
