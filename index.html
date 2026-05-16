@@ -1,0 +1,1727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>White Tiger — Public Safety & Intelligence Division</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Barlow:wght@300;400;500;600&family=Barlow+Condensed:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --ink:       #0e0f11;
+    --paper:     #f4f1eb;
+    --cream:     #ede9df;
+    --warm-mid:  #b5aa96;
+    --rule:      #d4cfc4;
+    --accent:    #1a2f4a;
+    --gold:      #c9a84c;
+    --red:       #8b1a1a;
+    --alert-red: #c0392b;
+    --mono:      'Share Tech Mono', monospace;
+    --serif:     'Cormorant Garamond', Georgia, serif;
+    --sans:      'Barlow', sans-serif;
+    --cond:      'Barlow Condensed', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-weight: 300;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ── NOISE TEXTURE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.6;
+  }
+
+  /* ── MASTHEAD ── */
+  .masthead {
+    border-bottom: 2px solid var(--ink);
+    padding: 0 48px;
+  }
+
+  .masthead-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 0 14px;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .masthead-top .dateline {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--warm-mid);
+    text-transform: uppercase;
+  }
+
+  .masthead-top .clearance {
+    font-family: var(--cond);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--warm-mid);
+    text-transform: uppercase;
+  }
+
+  .masthead-main {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    padding: 24px 0 20px;
+  }
+
+  .tiger-emblem {
+    width: 64px;
+    height: 64px;
+    flex-shrink: 0;
+  }
+
+  .masthead-titles {
+    flex: 1;
+  }
+
+  .org-name {
+    font-family: var(--serif);
+    font-size: 42px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    line-height: 1;
+    color: var(--accent);
+  }
+
+  .org-subtitle {
+    font-family: var(--cond);
+    font-size: 12px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--warm-mid);
+    margin-top: 6px;
+  }
+
+  .masthead-right {
+    text-align: right;
+  }
+
+  .masthead-right .issue-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--warm-mid);
+    display: block;
+  }
+
+  .masthead-right .issue-num {
+    font-family: var(--serif);
+    font-size: 28px;
+    font-weight: 300;
+    color: var(--accent);
+    line-height: 1;
+  }
+
+  /* ── NAV ── */
+  nav {
+    display: flex;
+    align-items: stretch;
+    padding: 0;
+    border-bottom: 1px solid var(--rule);
+    margin-top: 0;
+  }
+
+  nav a, nav button {
+    font-family: var(--cond);
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-weight: 600;
+    text-decoration: none;
+    color: var(--ink);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 14px 22px;
+    border-right: 1px solid var(--rule);
+    transition: background 0.15s, color 0.15s;
+    position: relative;
+  }
+
+  nav a:hover, nav button:hover {
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  nav a.active {
+    background: var(--accent);
+    color: var(--paper);
+  }
+
+  nav .nav-restricted {
+    margin-left: auto;
+    border-left: 1px solid var(--rule);
+    border-right: none;
+    color: var(--warm-mid);
+    font-size: 11px;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+
+  nav .nav-restricted .lock-icon {
+    width: 11px;
+    height: 11px;
+    opacity: 0.5;
+  }
+
+  nav .nav-restricted:hover {
+    color: var(--paper);
+    background: var(--accent);
+  }
+
+  /* ── SECTIONS ── */
+  .section {
+    display: none;
+    animation: fadeSection 0.3s ease;
+  }
+
+  .section.active {
+    display: block;
+  }
+
+  @keyframes fadeSection {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── HERO BAND (shared) ── */
+  .section-hero {
+    background: var(--accent);
+    color: var(--paper);
+    padding: 48px 48px 42px;
+    border-bottom: 3px solid var(--gold);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .section-hero::after {
+    content: '';
+    position: absolute;
+    right: -20px;
+    top: -20px;
+    width: 280px;
+    height: 280px;
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 50%;
+  }
+
+  .section-hero::before {
+    content: '';
+    position: absolute;
+    right: 30px;
+    top: 30px;
+    width: 180px;
+    height: 180px;
+    border: 1px solid rgba(255,255,255,0.04);
+    border-radius: 50%;
+  }
+
+  .hero-eyebrow {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 12px;
+  }
+
+  .hero-title {
+    font-family: var(--serif);
+    font-size: 52px;
+    font-weight: 300;
+    line-height: 1.05;
+    max-width: 620px;
+  }
+
+  .hero-title em {
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .hero-rule {
+    width: 48px;
+    height: 2px;
+    background: var(--gold);
+    margin: 22px 0;
+  }
+
+  .hero-lead {
+    font-size: 15px;
+    font-weight: 300;
+    line-height: 1.8;
+    max-width: 560px;
+    color: rgba(244,241,235,0.8);
+  }
+
+  /* ── CONTENT GRID ── */
+  .content-grid {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 0;
+    min-height: 520px;
+  }
+
+  .content-main {
+    padding: 40px 48px;
+    border-right: 1px solid var(--rule);
+  }
+
+  .content-sidebar {
+    padding: 40px 32px;
+    background: var(--cream);
+  }
+
+  /* ── ABOUT SECTION ── */
+  .about-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    margin-bottom: 40px;
+  }
+
+  .about-block h3 {
+    font-family: var(--cond);
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--warm-mid);
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .about-block p {
+    font-size: 14px;
+    line-height: 1.85;
+    color: #2a2a2a;
+  }
+
+  .stat-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+    margin-top: 32px;
+  }
+
+  .stat-cell {
+    background: var(--paper);
+    padding: 22px 18px;
+    text-align: center;
+  }
+
+  .stat-num {
+    font-family: var(--serif);
+    font-size: 36px;
+    font-weight: 600;
+    color: var(--accent);
+    display: block;
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-family: var(--cond);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--warm-mid);
+    margin-top: 6px;
+    display: block;
+  }
+
+  /* ── PERSONNEL SECTION ── */
+  .personnel-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+  }
+
+  .personnel-card {
+    background: var(--paper);
+    padding: 24px;
+    transition: background 0.15s;
+  }
+
+  .personnel-card:hover {
+    background: var(--cream);
+  }
+
+  .personnel-card .card-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 14px;
+  }
+
+  .officer-avatar {
+    width: 48px;
+    height: 48px;
+    background: var(--accent);
+    border-radius: 0;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--serif);
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--gold);
+  }
+
+  .officer-info .name {
+    font-family: var(--serif);
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.2;
+    color: var(--accent);
+  }
+
+  .officer-info .rank {
+    font-family: var(--cond);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--warm-mid);
+    margin-top: 3px;
+  }
+
+  .officer-info .ring {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    background: var(--accent);
+    color: var(--gold);
+    padding: 2px 8px;
+    margin-top: 5px;
+  }
+
+  .personnel-card .bio {
+    font-size: 13px;
+    line-height: 1.7;
+    color: #3a3a3a;
+    border-top: 1px solid var(--rule);
+    padding-top: 12px;
+  }
+
+  .personnel-card .status-bar {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 10px;
+  }
+
+  .status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #2d7a4a;
+    animation: pulse-green 2s infinite;
+  }
+
+  @keyframes pulse-green {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  .status-text {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--warm-mid);
+  }
+
+  /* ── NEWS SECTION ── */
+  .dispatch-list { border-top: 2px solid var(--ink); }
+
+  .dispatch-item {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 24px;
+    padding: 24px 0;
+    border-bottom: 1px solid var(--rule);
+    align-items: start;
+  }
+
+  .dispatch-date {
+    text-align: center;
+  }
+
+  .dispatch-date .day {
+    font-family: var(--serif);
+    font-size: 32px;
+    font-weight: 600;
+    line-height: 1;
+    color: var(--accent);
+    display: block;
+  }
+
+  .dispatch-date .month {
+    font-family: var(--cond);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--warm-mid);
+    display: block;
+  }
+
+  .dispatch-content .tag {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    background: var(--accent);
+    color: var(--gold);
+    padding: 2px 8px;
+    margin-bottom: 8px;
+    display: inline-block;
+  }
+
+  .dispatch-content .tag.red { background: var(--red); color: #f4f1eb; }
+
+  .dispatch-content h3 {
+    font-family: var(--serif);
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+
+  .dispatch-content p {
+    font-size: 13px;
+    line-height: 1.75;
+    color: #3a3a3a;
+  }
+
+  .dispatch-content .redacted {
+    background: var(--ink);
+    color: var(--ink);
+    user-select: none;
+    border-radius: 2px;
+    padding: 0 4px;
+  }
+
+  /* ── CONTACT SECTION ── */
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    margin-bottom: 32px;
+  }
+
+  .contact-block {
+    padding: 24px;
+    border: 1px solid var(--rule);
+  }
+
+  .contact-block h3 {
+    font-family: var(--cond);
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--warm-mid);
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 8px;
+    margin-bottom: 14px;
+  }
+
+  .contact-block p {
+    font-size: 13px;
+    line-height: 1.8;
+    color: #3a3a3a;
+  }
+
+  .contact-block .mono-detail {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    margin-top: 10px;
+    display: block;
+  }
+
+  .contact-form { border: 1px solid var(--rule); padding: 28px; }
+
+  .contact-form h3 {
+    font-family: var(--cond);
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--warm-mid);
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 8px;
+    margin-bottom: 20px;
+  }
+
+  .form-row { margin-bottom: 16px; }
+
+  .form-row label {
+    display: block;
+    font-family: var(--cond);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--warm-mid);
+    margin-bottom: 6px;
+  }
+
+  .form-row input, .form-row textarea {
+    width: 100%;
+    background: var(--cream);
+    border: 1px solid var(--rule);
+    border-radius: 0;
+    padding: 10px 14px;
+    font-family: var(--sans);
+    font-size: 13px;
+    color: var(--ink);
+    outline: none;
+    transition: border-color 0.15s;
+  }
+
+  .form-row input:focus, .form-row textarea:focus {
+    border-color: var(--accent);
+  }
+
+  .form-row textarea { min-height: 90px; resize: vertical; }
+
+  .btn-submit {
+    font-family: var(--cond);
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-weight: 600;
+    background: var(--accent);
+    color: var(--paper);
+    border: none;
+    padding: 12px 28px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+
+  .btn-submit:hover { background: var(--ink); }
+
+  /* ── SIDEBAR SHARED ── */
+  .sidebar-block {
+    margin-bottom: 32px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .sidebar-block:last-child { border-bottom: none; }
+
+  .sidebar-block h4 {
+    font-family: var(--cond);
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--warm-mid);
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .sidebar-list { list-style: none; }
+
+  .sidebar-list li {
+    font-size: 13px;
+    padding: 7px 0;
+    border-bottom: 1px dotted var(--rule);
+    color: #2a2a2a;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .sidebar-list li:last-child { border-bottom: none; }
+
+  .sidebar-list li .badge {
+    font-family: var(--mono);
+    font-size: 9px;
+    padding: 2px 7px;
+    background: var(--accent);
+    color: var(--gold);
+  }
+
+  .sidebar-list li .badge.green {
+    background: #1c4a2e;
+    color: #7ed99b;
+  }
+
+  .sidebar-list li .badge.amber {
+    background: #4a3000;
+    color: #f0b429;
+  }
+
+  .alert-box {
+    background: var(--accent);
+    color: var(--paper);
+    padding: 16px;
+    border-left: 3px solid var(--gold);
+  }
+
+  .alert-box .alert-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 6px;
+    display: block;
+  }
+
+  .alert-box p {
+    font-size: 12px;
+    line-height: 1.7;
+    color: rgba(244,241,235,0.8);
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 2px solid var(--ink);
+    padding: 24px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--cream);
+  }
+
+  footer .footer-left {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--warm-mid);
+    text-transform: uppercase;
+  }
+
+  footer .footer-right {
+    font-family: var(--cond);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--warm-mid);
+  }
+
+  /* ── RESTRICTED SECTION ── */
+  #section-restricted {
+    min-height: 600px;
+  }
+
+  .restricted-hero {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 48px 48px 42px;
+    border-bottom: 3px solid var(--red);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .restricted-hero::after {
+    content: 'RESTRICTED';
+    position: absolute;
+    right: -20px;
+    top: 50%;
+    transform: translateY(-50%) rotate(90deg);
+    font-family: var(--cond);
+    font-size: 80px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: rgba(139,26,26,0.15);
+    white-space: nowrap;
+    pointer-events: none;
+  }
+
+  .restricted-hero .hero-eyebrow { color: var(--red); }
+  .restricted-hero .hero-title { color: var(--paper); }
+  .restricted-hero .hero-rule { background: var(--red); }
+
+  /* passkey panel */
+  .passkey-outer {
+    padding: 56px 48px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .passkey-panel {
+    width: 100%;
+    max-width: 480px;
+    border: 1px solid var(--rule);
+    background: var(--paper);
+  }
+
+  .passkey-header {
+    background: var(--accent);
+    color: var(--paper);
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .passkey-header .ph-label {
+    font-family: var(--cond);
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+  }
+
+  .passkey-header .ph-id {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--gold);
+  }
+
+  .passkey-body {
+    padding: 32px 28px;
+  }
+
+  .passkey-body p {
+    font-size: 13px;
+    line-height: 1.8;
+    color: #3a3a3a;
+    margin-bottom: 24px;
+  }
+
+  .passkey-input-row {
+    display: flex;
+    gap: 0;
+    margin-bottom: 12px;
+  }
+
+  #passkey-input {
+    flex: 1;
+    background: var(--cream);
+    border: 1px solid var(--rule);
+    border-right: none;
+    border-radius: 0;
+    padding: 12px 16px;
+    font-family: var(--mono);
+    font-size: 14px;
+    letter-spacing: 0.15em;
+    color: var(--ink);
+    outline: none;
+    transition: border-color 0.15s;
+    text-transform: uppercase;
+  }
+
+  #passkey-input.shake {
+    animation: shake 0.4s ease;
+    border-color: var(--alert-red);
+  }
+
+  @keyframes shake {
+    0%,100% { transform: translateX(0); }
+    20%      { transform: translateX(-8px); }
+    40%      { transform: translateX(8px); }
+    60%      { transform: translateX(-5px); }
+    80%      { transform: translateX(5px); }
+  }
+
+  #passkey-input:focus { border-color: var(--accent); }
+
+  .btn-unlock {
+    font-family: var(--cond);
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-weight: 600;
+    background: var(--accent);
+    color: var(--paper);
+    border: 1px solid var(--accent);
+    padding: 12px 20px;
+    cursor: pointer;
+    transition: background 0.15s;
+    white-space: nowrap;
+  }
+
+  .btn-unlock:hover { background: var(--ink); border-color: var(--ink); }
+
+  .passkey-feedback {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    min-height: 18px;
+    color: var(--alert-red);
+    transition: opacity 0.2s;
+  }
+
+  .attempt-counter {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: var(--warm-mid);
+    text-align: right;
+    margin-top: 8px;
+  }
+
+  /* ── SYSTEM ALERT OVERLAY ── */
+  .sys-alert-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(10,10,12,0.88);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s;
+  }
+
+  .sys-alert-overlay.visible {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .sys-alert-box {
+    width: 520px;
+    background: #0e0f11;
+    border: 1px solid var(--alert-red);
+    box-shadow: 0 0 40px rgba(192,57,43,0.25), 0 0 80px rgba(192,57,43,0.08);
+    font-family: var(--mono);
+  }
+
+  .sys-alert-titlebar {
+    background: var(--alert-red);
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .sys-alert-titlebar span {
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #fff;
+  }
+
+  .sys-alert-body {
+    padding: 28px 24px 20px;
+    color: #c8c8c8;
+  }
+
+  .sys-alert-body .log-line {
+    font-size: 11px;
+    line-height: 2.2;
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    display: flex;
+    gap: 12px;
+  }
+
+  .log-line .ts { color: rgba(192,57,43,0.7); flex-shrink: 0; }
+  .log-line .msg { color: #9a9a9a; }
+  .log-line .msg.warn { color: #e0b44a; }
+  .log-line .msg.crit { color: var(--alert-red); }
+
+  .sys-alert-footer {
+    border-top: 1px solid rgba(255,255,255,0.07);
+    padding: 14px 24px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+  }
+
+  .sys-btn {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 8px 18px;
+    border: none;
+    cursor: pointer;
+  }
+
+  .sys-btn.dismiss {
+    background: rgba(255,255,255,0.06);
+    color: #9a9a9a;
+  }
+
+  .sys-btn.dismiss:hover { background: rgba(255,255,255,0.12); }
+
+  /* ── ACCESS GRANTED PANEL ── */
+  #access-granted {
+    display: none;
+    padding: 48px;
+    animation: fadeSection 0.4s ease;
+  }
+
+  .granted-banner {
+    background: #1c4a2e;
+    border-left: 4px solid #7ed99b;
+    padding: 20px 24px;
+    margin-bottom: 36px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .granted-banner .gb-icon {
+    font-family: var(--mono);
+    font-size: 20px;
+    color: #7ed99b;
+  }
+
+  .granted-banner .gb-text {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #7ed99b;
+  }
+
+  .granted-banner .gb-sub {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: rgba(126,217,155,0.6);
+    margin-top: 3px;
+    display: block;
+  }
+
+  .archive-intro {
+    max-width: 600px;
+    margin-bottom: 36px;
+  }
+
+  .archive-intro h2 {
+    font-family: var(--serif);
+    font-size: 32px;
+    font-weight: 600;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+
+  .archive-intro p {
+    font-size: 14px;
+    line-height: 1.85;
+    color: #3a3a3a;
+  }
+
+  .archive-files {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+    margin-bottom: 32px;
+  }
+
+  .archive-file {
+    background: var(--paper);
+    padding: 22px;
+    transition: background 0.15s;
+    cursor: pointer;
+  }
+
+  .archive-file:hover { background: var(--cream); }
+
+  .archive-file .file-id {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    color: var(--warm-mid);
+    margin-bottom: 8px;
+  }
+
+  .archive-file .file-name {
+    font-family: var(--serif);
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+
+  .archive-file .file-status {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    display: inline-block;
+  }
+
+  .archive-file .file-status.locked {
+    background: var(--ink);
+    color: rgba(244,241,235,0.4);
+  }
+
+  .archive-file .file-status.partial {
+    background: #4a3000;
+    color: #f0b429;
+  }
+
+  .next-step-box {
+    background: var(--accent);
+    color: var(--paper);
+    padding: 28px 32px;
+    border-left: 4px solid var(--gold);
+    max-width: 600px;
+  }
+
+  .next-step-box .ns-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 10px;
+    display: block;
+  }
+
+  .next-step-box p {
+    font-size: 14px;
+    line-height: 1.85;
+    color: rgba(244,241,235,0.85);
+  }
+
+  .next-step-box .coord {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--gold);
+    margin-top: 14px;
+    display: block;
+    letter-spacing: 0.08em;
+  }
+
+  /* ── GLITCH FLICKER (subtle) ── */
+  @keyframes glitch-flicker {
+    0%,98%,100% { opacity: 1; }
+    99% { opacity: 0.85; clip-path: inset(30% 0 50% 0); }
+  }
+
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════ MASTHEAD ═══════════════════════════════════ -->
+<header class="masthead">
+  <div class="masthead-top">
+    <span class="dateline" id="live-date">Loading...</span>
+    <span class="clearance">Public Information Release &nbsp;·&nbsp; Atellian Division</span>
+  </div>
+  <div class="masthead-main">
+    <svg class="tiger-emblem" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="64" height="64" fill="#1a2f4a"/>
+      <path d="M32 8 L56 20 L56 44 L32 56 L8 44 L8 20 Z" stroke="#c9a84c" stroke-width="1.5" fill="none"/>
+      <path d="M32 14 L50 24 L50 40 L32 50 L14 40 L14 24 Z" stroke="#c9a84c" stroke-width="0.5" fill="none" opacity="0.4"/>
+      <text x="32" y="38" text-anchor="middle" font-family="Georgia" font-size="20" font-weight="bold" fill="#c9a84c">白</text>
+    </svg>
+    <div class="masthead-titles">
+      <div class="org-name">White Tiger</div>
+      <div class="org-subtitle">Public Safety &amp; Intelligence Division &nbsp;·&nbsp; City of Grimoria</div>
+    </div>
+    <div class="masthead-right">
+      <span class="issue-label">Dispatch Cycle</span>
+      <span class="issue-num">1628</span>
+    </div>
+  </div>
+
+  <!-- NAV -->
+  <nav>
+    <button onclick="showSection('about')" id="nav-about" class="active">About / Mission</button>
+    <button onclick="showSection('personnel')" id="nav-personnel">Personnel</button>
+    <button onclick="showSection('news')" id="nav-news">News &amp; Dispatch</button>
+    <button onclick="showSection('contact')" id="nav-contact">Contact</button>
+    <button onclick="showSection('restricted')" id="nav-restricted" class="nav-restricted">
+      <svg class="lock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/>
+      </svg>
+      Archives
+    </button>
+  </nav>
+</header>
+
+<!-- ═══════════════════════════════════ ABOUT ═══════════════════════════════════ -->
+<section id="section-about" class="section active">
+  <div class="section-hero">
+    <div class="hero-eyebrow">Est. City Charter Year 1 &nbsp;·&nbsp; Grimoria</div>
+    <h1 class="hero-title">Order, <em>intelligence</em>,<br>and the public trust.</h1>
+    <div class="hero-rule"></div>
+    <p class="hero-lead">The White Tiger serves as Grimoria's foremost institution for civil order, magic law enforcement, and intelligence coordination — operating across all ring classifications to ensure the safety of every citizen within the city's walls.</p>
+  </div>
+
+  <div class="content-grid">
+    <div class="content-main">
+      <div class="about-columns">
+        <div class="about-block">
+          <h3>Our Mission</h3>
+          <p>To uphold the laws of the Atellian Empire within the jurisdiction of Grimoria; to investigate incidents involving unauthorized magic use, civil disruption, and threats to the city's four foundational institutions.</p>
+        </div>
+        <div class="about-block">
+          <h3>Jurisdiction</h3>
+          <p>The White Tiger maintains primary jurisdiction over all wards of Grimoria, extending to the bridge corridors and mountain passes that serve as entry points into the city. Coordination with the Bronze Guard is maintained for cross-border matters.</p>
+        </div>
+        <div class="about-block">
+          <h3>Ring Neutrality</h3>
+          <p>Officers of the White Tiger are bound by the City Charter to enforce the law without prejudice toward ring classification. All citizens — from White to Gold — are subject to equal investigation and due process.</p>
+        </div>
+        <div class="about-block">
+          <h3>The Four Pillars</h3>
+          <p>The White Tiger operates in coordination with the city's four foundational institutions: the Black Tortoise Academy, the Vermillion Bird Medical Authority, the Azure Dragon Cultural Council, and this division itself.</p>
+        </div>
+      </div>
+
+      <div class="stat-row">
+        <div class="stat-cell">
+          <span class="stat-num">340+</span>
+          <span class="stat-label">Active Officers</span>
+        </div>
+        <div class="stat-cell">
+          <span class="stat-num">97%</span>
+          <span class="stat-label">Case Resolution Rate</span>
+        </div>
+        <div class="stat-cell">
+          <span class="stat-num">9</span>
+          <span class="stat-label">Operational Forces</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="content-sidebar">
+      <div class="sidebar-block">
+        <h4>Current Alert Level</h4>
+        <div class="alert-box">
+          <span class="alert-label">&#9632; Elevated — City-Wide</span>
+          <p>Following recent incidents at multiple city institutions, the White Tiger has elevated operational readiness to Level 2. Citizens are advised to report anomalous magic activity immediately.</p>
+        </div>
+      </div>
+      <div class="sidebar-block">
+        <h4>Active Investigation Sectors</h4>
+        <ul class="sidebar-list">
+          <li>Bridge Corridor — Train Incident <span class="badge">Open</span></li>
+          <li>Black Tortoise Campus <span class="badge amber">Active</span></li>
+          <li>Central Fountain District <span class="badge">Open</span></li>
+          <li>WTA HQ Breach — Internal <span class="badge amber">Active</span></li>
+          <li>Underground Passages <span class="badge">Open</span></li>
+        </ul>
+      </div>
+      <div class="sidebar-block">
+        <h4>Public Advisory</h4>
+        <p style="font-size:12px;line-height:1.8;color:#3a3a3a;">If you have information regarding individuals wearing <strong>red coats</strong> or any sightings of unexplained fire-related incidents, contact the White Tiger immediately. Do not approach suspects.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════ PERSONNEL ═══════════════════════════════════ -->
+<section id="section-personnel" class="section">
+  <div class="section-hero">
+    <div class="hero-eyebrow">Force Roster &nbsp;·&nbsp; Public Record</div>
+    <h1 class="hero-title">The officers of<br><em>Grimoria's</em> first line.</h1>
+    <div class="hero-rule"></div>
+    <p class="hero-lead">The following profiles are released under the White Tiger Public Information Directive. Classified personnel files are withheld from this release. Full dossiers are maintained in the restricted archives.</p>
+  </div>
+
+  <div class="content-grid">
+    <div class="content-main">
+      <div class="personnel-grid">
+
+        <div class="personnel-card">
+          <div class="card-header">
+            <div class="officer-avatar">HK</div>
+            <div class="officer-info">
+              <div class="name">Hina Kang</div>
+              <div class="rank">Captain &nbsp;·&nbsp; Force 1</div>
+              <div class="ring">Silver Ring</div>
+            </div>
+          </div>
+          <div class="bio">Daughter of Chief Officer Frank Kang. Oversees Force 1 operations and is the primary liaison between the White Tiger and the city's four institutional pillars. Specialises in psychic and psychokinetic magic with documented mastery of Grimoire-based Sigila.</div>
+          <div class="status-bar">
+            <div class="status-dot"></div>
+            <span class="status-text">On Duty &nbsp;·&nbsp; Field Operations</span>
+          </div>
+        </div>
+
+        <div class="personnel-card">
+          <div class="card-header">
+            <div class="officer-avatar">IF</div>
+            <div class="officer-info">
+              <div class="name">Ino Fyroah</div>
+              <div class="rank">Assistant Captain &nbsp;·&nbsp; Force 1</div>
+              <div class="ring">Silver Ring</div>
+            </div>
+          </div>
+          <div class="bio">Senior investigative officer and Captain Kang's primary subordinate. Noted for high mana output and precision water-type casting. Leads field interviews and evidence coordination for open investigations.</div>
+          <div class="status-bar">
+            <div class="status-dot"></div>
+            <span class="status-text">On Duty &nbsp;·&nbsp; Investigative Lead</span>
+          </div>
+        </div>
+
+        <div class="personnel-card">
+          <div class="card-header">
+            <div class="officer-avatar">FK</div>
+            <div class="officer-info">
+              <div class="name">Frank Kang</div>
+              <div class="rank">Chief Officer &nbsp;·&nbsp; White Tiger</div>
+              <div class="ring">Silver Ring</div>
+            </div>
+          </div>
+          <div class="bio">Founding administrator of the White Tiger's current operational structure. Directly oversees all nine active forces and serves as the city's primary law enforcement authority. Reports to the Red Ring mayoral office.</div>
+          <div class="status-bar">
+            <div class="status-dot"></div>
+            <span class="status-text">On Duty &nbsp;·&nbsp; Command</span>
+          </div>
+        </div>
+
+        <div class="personnel-card">
+          <div class="card-header">
+            <div class="officer-avatar">DS</div>
+            <div class="officer-info">
+              <div class="name">Demiah Sanchez</div>
+              <div class="rank">Head Receptionist &nbsp;·&nbsp; Admin Division</div>
+              <div class="ring">Bronze Ring</div>
+            </div>
+          </div>
+          <div class="bio">Longest-serving non-officer staff member at White Tiger HQ. Manages visitor intake, internal communications, and personnel coordination. Known for exceptional institutional memory and attention to anomalous detail.</div>
+          <div class="status-bar">
+            <div class="status-dot"></div>
+            <span class="status-text">On Duty &nbsp;·&nbsp; Headquarters</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="content-sidebar">
+      <div class="sidebar-block">
+        <h4>Force Structure</h4>
+        <ul class="sidebar-list">
+          <li>Force 1 — Intelligence <span class="badge green">Active</span></li>
+          <li>Force 2 — Civil Order <span class="badge green">Active</span></li>
+          <li>Force 3 — Magic Crimes <span class="badge green">Active</span></li>
+          <li>Force 4 — Internal Affairs <span class="badge">Standby</span></li>
+          <li>Force 5 — Border Control <span class="badge green">Active</span></li>
+        </ul>
+      </div>
+      <div class="sidebar-block">
+        <h4>Personnel Notice</h4>
+        <div class="alert-box">
+          <span class="alert-label">&#9632; Notice — Internal</span>
+          <p>Detailed dossiers for all personnel, including classified field histories, are maintained exclusively within the restricted archive system. Access requires valid clearance credentials.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════ NEWS ═══════════════════════════════════ -->
+<section id="section-news" class="section">
+  <div class="section-hero">
+    <div class="hero-eyebrow">Public Dispatch &nbsp;·&nbsp; Cycle 1628</div>
+    <h1 class="hero-title">Situation reports &amp;<br><em>public</em> advisories.</h1>
+    <div class="hero-rule"></div>
+    <p class="hero-lead">The following dispatches have been cleared for public release. Some details have been withheld pending ongoing investigation. The White Tiger is committed to keeping citizens of Grimoria informed.</p>
+  </div>
+
+  <div class="content-grid">
+    <div class="content-main">
+      <div class="dispatch-list">
+
+        <div class="dispatch-item">
+          <div class="dispatch-date">
+            <span class="day">26</span>
+            <span class="month">Jun</span>
+          </div>
+          <div class="dispatch-content">
+            <span class="tag red">Priority</span>
+            <h3>Unauthorized Summoning Event — Black Tortoise Campus</h3>
+            <p>At approximately 10:40 am, a Class-3 demonic entity was confirmed within the grounds of the Black Tortoise Academy. The entity was neutralized through the combined efforts of academy staff and responding White Tiger officers. <span class="redacted">████████████████████████████ the vessel's identity remains under active investigation</span>. All students have been evacuated safely. Campus is temporarily closed pending structural assessment.</p>
+          </div>
+        </div>
+
+        <div class="dispatch-item">
+          <div class="dispatch-date">
+            <span class="day">26</span>
+            <span class="month">Jun</span>
+          </div>
+          <div class="dispatch-content">
+            <span class="tag">Advisory</span>
+            <h3>White Tiger HQ — Security Breach Confirmed</h3>
+            <p>A breach of White Tiger headquarters occurred during the evening of June 26. Two individuals, <span class="redacted">█████████████</span>, were apprehended on-site. One fatality was confirmed among the assailants. Internal affairs is conducting a full review. Affected personnel have been relocated to the Vermillion Bird medical facility.</p>
+          </div>
+        </div>
+
+        <div class="dispatch-item">
+          <div class="dispatch-date">
+            <span class="day">24</span>
+            <span class="month">Jun</span>
+          </div>
+          <div class="dispatch-content">
+            <span class="tag">Incident</span>
+            <h3>Bridge Corridor — Train Disruption &amp; Explosion</h3>
+            <p>A detonation event occurred aboard a passenger service arriving from Hurst during the afternoon of June 24. The train came to rest on the bridge spanning the lake perimeter. Injuries were minor; no civilian fatalities confirmed. <span class="redacted">████████</span> individuals fell from the train into the lake. Investigation is ongoing. Witnesses are urged to contact Force 1.</p>
+          </div>
+        </div>
+
+        <div class="dispatch-item">
+          <div class="dispatch-date">
+            <span class="day">24</span>
+            <span class="month">Jun</span>
+          </div>
+          <div class="dispatch-content">
+            <span class="tag">Advisory</span>
+            <h3>Unexplained Fire Fatalities — Civilian &amp; Detained</h3>
+            <p>Two separate incidents of fatal spontaneous combustion have been recorded, affecting a civilian in the Central Market district and a detained individual held at White Tiger HQ. Both events display characteristics inconsistent with conventional fire magic. A specialist team has been assigned. Citizens are advised to report any red-coated individuals to Force 1 immediately.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="content-sidebar">
+      <div class="sidebar-block">
+        <h4>Active Advisories</h4>
+        <ul class="sidebar-list">
+          <li>Report red coats <span class="badge amber">Active</span></li>
+          <li>Magic anomaly hotline <span class="badge green">Live</span></li>
+          <li>Campus evacuation <span class="badge amber">Ongoing</span></li>
+          <li>Bridge inspection <span class="badge">Open</span></li>
+        </ul>
+      </div>
+      <div class="sidebar-block">
+        <h4>Dispatch Note</h4>
+        <p style="font-size:12px;line-height:1.8;color:#3a3a3a;">Portions of all public dispatches are redacted per Intelligence Directive 14-C. Full unredacted incident reports are held within the classified archives. Access is restricted to cleared personnel.</p>
+      </div>
+      <div class="sidebar-block">
+        <h4>Contact Force 1</h4>
+        <p style="font-size:12px;line-height:1.8;color:#3a3a3a;">To report a sighting or submit eyewitness testimony related to any active case, contact Force 1 directly through the Communications desk at White Tiger HQ.</p>
+        <span style="font-family:var(--mono);font-size:10px;color:var(--accent);display:block;margin-top:8px;letter-spacing:0.1em;">COMM-LINE: F1-DIRECT-GRIMORIA</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════ CONTACT ═══════════════════════════════════ -->
+<section id="section-contact" class="section">
+  <div class="section-hero">
+    <div class="hero-eyebrow">Public Interface &nbsp;·&nbsp; White Tiger HQ</div>
+    <h1 class="hero-title">Reach the division.<br><em>We are listening.</em></h1>
+    <div class="hero-rule"></div>
+    <p class="hero-lead">All tips, reports, and formal inquiries may be submitted through this channel. Responses are handled by the Administrative Division within 48 hours. For emergencies, proceed directly to White Tiger HQ.</p>
+  </div>
+
+  <div class="content-grid">
+    <div class="content-main">
+      <div class="contact-grid">
+        <div class="contact-block">
+          <h3>Headquarters</h3>
+          <p>White Tiger Main Facility<br>Central District, Grimoria<br>City of the Great Valley<br>Atellian Empire</p>
+          <span class="mono-detail">COORD: GT-CENTRAL-0001</span>
+        </div>
+        <div class="contact-block">
+          <h3>Emergency Line</h3>
+          <p>Force 2 — Civil Order maintains a 24-hour emergency response capacity. In the event of magic-related disturbances, unauthorized summoning, or imminent threat, seek the nearest White Tiger officer.</p>
+          <span class="mono-detail">PRIORITY: FORCE-2-RESPONSE</span>
+        </div>
+        <div class="contact-block">
+          <h3>Anonymous Tips</h3>
+          <p>The White Tiger operates a confidential tip intake channel for information related to active cases. Identity protection is guaranteed under City Charter Article 7.</p>
+          <span class="mono-detail">TIP-LINE: ANON-INTAKE-WTA</span>
+        </div>
+        <div class="contact-block">
+          <h3>Press Inquiries</h3>
+          <p>Approved media representatives may submit formal inquiries to the White Tiger Public Information Officer. Response turnaround is five business days for non-priority requests.</p>
+          <span class="mono-detail">PRESS: PIO-WTA-GRIMORIA</span>
+        </div>
+      </div>
+
+      <div class="contact-form">
+        <h3>Submit a Report or Inquiry</h3>
+        <div class="form-row">
+          <label>Full Name</label>
+          <input type="text" placeholder="As registered with city authorities">
+        </div>
+        <div class="form-row">
+          <label>Ring Classification</label>
+          <input type="text" placeholder="White / Bronze / Silver / Gold">
+        </div>
+        <div class="form-row">
+          <label>Subject</label>
+          <input type="text" placeholder="Case number or general subject">
+        </div>
+        <div class="form-row">
+          <label>Message</label>
+          <textarea placeholder="Describe your report, sighting, or inquiry in full detail. Include dates, locations, and any physical descriptions where possible."></textarea>
+        </div>
+        <button class="btn-submit" onclick="handleFormSubmit(event)">Submit to White Tiger</button>
+        <p id="form-confirm" style="display:none;font-family:var(--mono);font-size:11px;color:#2d7a4a;margin-top:12px;letter-spacing:0.1em;">✓ SUBMISSION RECEIVED — REFERENCE: WTA-<span id="ref-num"></span></p>
+      </div>
+    </div>
+
+    <div class="content-sidebar">
+      <div class="sidebar-block">
+        <h4>Response Times</h4>
+        <ul class="sidebar-list">
+          <li>Emergency <span class="badge green">Immediate</span></li>
+          <li>Active case tips <span class="badge green">24 hrs</span></li>
+          <li>General inquiries <span class="badge">48 hrs</span></li>
+          <li>Press inquiries <span class="badge">5 days</span></li>
+          <li>Archive requests <span class="badge amber">Varies</span></li>
+        </ul>
+      </div>
+      <div class="sidebar-block">
+        <h4>Note on Archive Access</h4>
+        <div class="alert-box">
+          <span class="alert-label">&#9632; Restricted</span>
+          <p>Requests for access to the White Tiger restricted archive system are not handled through this public channel. Archive access requires verified credentials obtained through authorised channels only.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════ RESTRICTED ═══════════════════════════════════ -->
+<section id="section-restricted" class="section">
+  <div class="restricted-hero">
+    <div class="hero-eyebrow">Clearance Required &nbsp;·&nbsp; Internal Access Only</div>
+    <h1 class="hero-title" style="color:var(--paper);">White Tiger<br><em style="color:var(--red);">Archives.</em></h1>
+    <div class="hero-rule" style="background:var(--red);"></div>
+    <p class="hero-lead" style="color:rgba(244,241,235,0.7);">This section of the White Tiger public portal provides entry to the classified archive system. Access is restricted to personnel and individuals in possession of a valid clearance code. Unauthorised access attempts are logged and investigated.</p>
+  </div>
+
+  <!-- PASSKEY PANEL -->
+  <div id="passkey-panel" class="passkey-outer">
+    <div class="passkey-panel">
+      <div class="passkey-header">
+        <span class="ph-label">Archive Clearance Terminal</span>
+        <span class="ph-id">WTA-SECURE-NODE-01</span>
+      </div>
+      <div class="passkey-body">
+        <p>Enter your issued archive clearance code below. Codes are case-insensitive. If you have not been issued a clearance code, you do not have access to this system.</p>
+        <div class="passkey-input-row">
+          <input type="text" id="passkey-input" placeholder="CLEARANCE CODE" autocomplete="off" maxlength="32"
+                 onkeydown="if(event.key==='Enter')checkPasskey()">
+          <button class="btn-unlock" onclick="checkPasskey()">Verify</button>
+        </div>
+        <div class="passkey-feedback" id="passkey-feedback"></div>
+        <div class="attempt-counter" id="attempt-counter"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- POST-ACCESS PANEL (hidden until correct code) -->
+  <div id="access-granted">
+    <div class="granted-banner">
+      <span class="gb-icon">✓</span>
+      <div>
+        <div class="gb-text">Access Granted — Archive Node Unlocked</div>
+        <span class="gb-sub">Session authenticated &nbsp;·&nbsp; Activity logged</span>
+      </div>
+    </div>
+
+    <div class="archive-intro">
+      <h2>White Tiger Archives</h2>
+      <p>Welcome to the restricted archive system. The files listed below represent classified dossiers, case materials, and intelligence assessments compiled by Force 1. Some records remain partially encrypted pending full decryption packages.</p>
+    </div>
+
+    <div class="archive-files">
+      <div class="archive-file">
+        <div class="file-id">WTA-DOSSIER-001</div>
+        <div class="file-name">Lincoln Grey</div>
+        <div class="file-status locked">Encrypted — Decryption Required</div>
+      </div>
+      <div class="archive-file">
+        <div class="file-id">WTA-DOSSIER-002</div>
+        <div class="file-name">Hina Kang</div>
+        <div class="file-status locked">Encrypted — Decryption Required</div>
+      </div>
+      <div class="archive-file">
+        <div class="file-id">WTA-DOSSIER-003</div>
+        <div class="file-name">Alan Ernst</div>
+        <div class="file-status locked">Encrypted — Decryption Required</div>
+      </div>
+      <div class="archive-file">
+        <div class="file-id">WTA-DOSSIER-004</div>
+        <div class="file-name">Clement Hinge</div>
+        <div class="file-status partial">Partial — Decryption Pending</div>
+      </div>
+      <div class="archive-file">
+        <div class="file-id">WTA-DOSSIER-005</div>
+        <div class="file-name">Pan Hollow</div>
+        <div class="file-status locked">Encrypted — Decryption Required</div>
+      </div>
+      <div class="archive-file">
+        <div class="file-id">WTA-CASE-024</div>
+        <div class="file-name">Operation: Firebird</div>
+        <div class="file-status partial">Partial — Decryption Pending</div>
+      </div>
+    </div>
+
+    <div class="next-step-box">
+      <span class="ns-label">&#9632; Intelligence Directive — Eyes Only</span>
+      <p>Full archive decryption requires the WTA Core Data Package. This package is not distributed through digital channels. Field intelligence suggests that fragments of the decryption key are held within the physical archives of a known institutional collection. Begin your reconnaissance. The coordinates below mark your starting point.</p>
+      <span class="coord">FIELD-ASSET: WTA_CORE_DATA.json &nbsp;·&nbsp; LOCATION: CLASSIFIED</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════ FOOTER ═══════════════════════════════════ -->
+<footer>
+  <div class="footer-left">© 1628 &nbsp;·&nbsp; White Tiger, City of Grimoria &nbsp;·&nbsp; Atellian Empire</div>
+  <div class="footer-right">Public Information Release &nbsp;·&nbsp; All rights reserved under City Charter</div>
+</footer>
+
+<!-- ═══════════════════════════════════ SYSTEM ALERT OVERLAY ═══════════════════════════════════ -->
+<div class="sys-alert-overlay" id="sys-alert">
+  <div class="sys-alert-box">
+    <div class="sys-alert-titlebar">
+      <span>⚠ WTA — Security Event Log</span>
+      <span id="alert-timestamp"></span>
+    </div>
+    <div class="sys-alert-body" id="alert-log-body">
+      <!-- dynamically filled -->
+    </div>
+    <div class="sys-alert-footer">
+      <button class="sys-btn dismiss" onclick="dismissAlert()">Acknowledge</button>
+    </div>
+  </div>
+</div>
+
+
+<script>
+  // ── LIVE DATE ──
+  (function() {
+    const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    const d = new Date();
+    document.getElementById('live-date').textContent =
+      `${d.getDate()} ${months[d.getMonth()]} 1628 &nbsp;·&nbsp; ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+  })();
+
+  // ── TAB NAV ──
+  function showSection(id) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+    document.getElementById('section-' + id).classList.add('active');
+    document.getElementById('nav-' + id).classList.add('active');
+  }
+
+  // ── PASSKEY LOGIC ──
+  const CORRECT_CODE = 'WHITEFANG';   // ← THE ARG CODE — change to your puzzle answer
+  let attempts = 0;
+  const MAX_BEFORE_ALERT = 3;
+
+  // Staged alert log lines per attempt cluster
+  const alertStages = [
+    [
+      { ts: getTS(), cls: 'warn', msg: 'Unauthorised access attempt detected — Node WTA-SECURE-NODE-01' },
+      { ts: getTS(), cls: '',    msg: 'Input logged. Session flagged for review.' },
+      { ts: getTS(), cls: '',    msg: 'Attempt 1 of 3 before escalation protocol.' },
+    ],
+    [
+      { ts: getTS(), cls: 'warn', msg: 'Second failed authorisation — escalating flag level.' },
+      { ts: getTS(), cls: '',    msg: 'IP trace initiated on this session.' },
+      { ts: getTS(), cls: 'warn', msg: 'Attempt 2 of 3. Next failure triggers Force 1 notification.' },
+    ],
+    [
+      { ts: getTS(), cls: 'crit', msg: 'CRITICAL — Three failed authorisation attempts.' },
+      { ts: getTS(), cls: 'crit', msg: 'Force 1 alert dispatched. Session under active surveillance.' },
+      { ts: getTS(), cls: '',    msg: 'All subsequent inputs are being recorded in full.' },
+      { ts: getTS(), cls: 'warn', msg: 'If you are an authorised user, contact the Admin Division immediately.' },
+    ]
+  ];
+
+  function getTS() {
+    const d = new Date();
+    return `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}:${String(d.getSeconds()).padStart(2,'0')}`;
+  }
+
+  function checkPasskey() {
+    const input = document.getElementById('passkey-input');
+    const val = input.value.trim().toUpperCase();
+    const feedback = document.getElementById('passkey-feedback');
+    const counter = document.getElementById('attempt-counter');
+
+    if (!val) return;
+
+    if (val === CORRECT_CODE) {
+      // SUCCESS
+      input.style.borderColor = '#2d7a4a';
+      feedback.style.color = '#2d7a4a';
+      feedback.textContent = '✓ Clearance verified. Unlocking archive...';
+      setTimeout(() => {
+        document.getElementById('passkey-panel').style.display = 'none';
+        document.getElementById('access-granted').style.display = 'block';
+      }, 1200);
+      return;
+    }
+
+    // FAIL
+    attempts++;
+    input.value = '';
+    input.classList.add('shake');
+    setTimeout(() => input.classList.remove('shake'), 450);
+    feedback.style.color = 'var(--alert-red)';
+
+    const remaining = MAX_BEFORE_ALERT - (attempts % MAX_BEFORE_ALERT);
+    if (attempts % MAX_BEFORE_ALERT === 0) {
+      feedback.textContent = 'ACCESS DENIED — Escalating to Force 1.';
+      triggerAlert(Math.min(Math.floor(attempts / MAX_BEFORE_ALERT) - 1, alertStages.length - 1));
+    } else {
+      feedback.textContent = `ACCESS DENIED — Code not recognised.`;
+    }
+
+    counter.textContent = `Attempt ${attempts} &nbsp;·&nbsp; ${remaining} attempt${remaining!==1?'s':''} before security escalation.`;
+  }
+
+  function triggerAlert(stageIndex) {
+    const stage = alertStages[stageIndex] || alertStages[alertStages.length - 1];
+    const overlay = document.getElementById('sys-alert');
+    const body = document.getElementById('alert-log-body');
+    document.getElementById('alert-timestamp').textContent = getTS();
+
+    body.innerHTML = '';
+    stage.forEach((line, i) => {
+      setTimeout(() => {
+        const div = document.createElement('div');
+        div.className = 'log-line';
+        div.innerHTML = `<span class="ts">${line.ts}</span><span class="msg ${line.cls}">${line.msg}</span>`;
+        body.appendChild(div);
+      }, i * 320);
+    });
+
+    overlay.classList.add('visible');
+  }
+
+  function dismissAlert() {
+    document.getElementById('sys-alert').classList.remove('visible');
+    document.getElementById('passkey-input').focus();
+  }
+
+  // ── CONTACT FORM SUBMIT ──
+  function handleFormSubmit(e) {
+    e.preventDefault();
+    const ref = Math.floor(10000 + Math.random() * 90000);
+    document.getElementById('ref-num').textContent = ref;
+    document.getElementById('form-confirm').style.display = 'block';
+  }
+</script>
+</body>
+</html>
